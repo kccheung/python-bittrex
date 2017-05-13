@@ -6,8 +6,8 @@ import time
 import hmac
 import hashlib
 try:
-    from urllib import urlencode
-    from urlparse import urljoin
+    from urllib.parse import urlencode
+    from urllib.parse import urljoin
 except ImportError:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
