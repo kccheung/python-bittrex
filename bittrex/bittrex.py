@@ -127,7 +127,7 @@ class Bittrex(object):
         """
         return self.api_query('getorderbook', {'market': market, 'type': depth_type, 'depth': depth})
 
-    def get_market_history(self, market, count):
+    def get_market_history(self, market):
         """
         Used to retrieve the latest trades that have occurred for a
         specific market.
@@ -137,13 +137,10 @@ class Bittrex(object):
         :param market: String literal for the market (ex: BTC-LTC)
         :type market: str
 
-        :param count: Number between 1-100 for the number of entries to return (default = 20)
-        :type count: int
-
         :return: Market history in JSON
         :rtype : dict
         """
-        return self.api_query('getmarkethistory', {'market': market, 'count': count})
+        return self.api_query('getmarkethistory', {'market': market})
 
     def buy_market(self, market, quantity):
         """
@@ -324,7 +321,7 @@ class Bittrex(object):
         """
         return self.api_query('withdraw', {'currency': currency, 'quantity': quantity, 'address': address})
 
-    def get_order_history(self, market, count):
+    def get_order_history(self, market):
         """
         Used to reterieve order trade history of account
 
@@ -333,11 +330,8 @@ class Bittrex(object):
         :param market: optional a string literal for the market (ie. BTC-LTC). If ommited, will return for all markets
         :type market: str
 
-        :param count: optional 	the number of records to return
-        :type count: int
-
         :return: order history in JSON
         :rtype : dict
 
         """
-        return self.api_query('getorderhistory', {'market':market, 'count': count})
+        return self.api_query('getorderhistory', {'market':market})
