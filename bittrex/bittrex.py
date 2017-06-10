@@ -21,7 +21,7 @@ BASE_URL = 'https://bittrex.com/api/v1.1/%s/'
 
 MARKET_SET = {'getopenorders', 'cancel', 'sellmarket', 'selllimit', 'buymarket', 'buylimit'}
 
-ACCOUNT_SET = {'getbalances', 'getbalance', 'getdepositaddress', 'withdraw', 'getorderhistory'}
+ACCOUNT_SET = {'getbalances', 'getbalance', 'getdepositaddress', 'withdraw', 'getorderhistory', 'getdeposithistory'}
 
 
 class Bittrex(object):
@@ -338,3 +338,18 @@ class Bittrex(object):
 
         """
         return self.api_query('getorderhistory', {'market':market})
+
+    def get_deposit_history(self, currency=None):
+        """
+        Used to retrieve your deposit history
+
+        /account/getdeposithistory
+
+        :param currency: optional a string literal for the currency (ie. BTC). If omitted, will return for all currencies
+        :type currency: str
+
+        :return: deposit history in JSON
+        :rtype : dict
+
+        """
+        return self.api_query('getdeposithistory', {'currency':currency})
