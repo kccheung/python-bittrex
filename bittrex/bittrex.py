@@ -47,6 +47,9 @@ class Bittrex(object):
         """
         if not options:
             options = {}
+        for key in options.keys():
+            if options[key] is None:
+                options.pop(key)
         nonce = str(int(time.time() * 1000))
         method_set = 'public'
 
