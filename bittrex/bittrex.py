@@ -251,13 +251,13 @@ class Bittrex(object):
         """
         return self.api_query('cancel', {'uuid': uuid})
 
-    def get_open_orders(self, market):
+    def get_open_orders(self, market=None):
         """
         Get all orders that you currently have opened. A specific market can be requested
 
         /market/getopenorders
 
-        :param market: String literal for the market (ie. BTC-LTC)
+        :param market: optional String literal for the market (ie. BTC-LTC)
         :type market: str
 
         :return: Open orders info in JSON
@@ -324,7 +324,7 @@ class Bittrex(object):
         """
         return self.api_query('withdraw', {'currency': currency, 'quantity': quantity, 'address': address})
 
-    def get_order_history(self, market):
+    def get_order_history(self, market=None):
         """
         Used to reterieve order trade history of account
 
