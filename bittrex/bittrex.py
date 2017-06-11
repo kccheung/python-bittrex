@@ -32,7 +32,7 @@ class Bittrex(object):
         self.api_key = str(api_key) if api_key is not None else ''
         self.api_secret = str(api_secret) if api_secret is not None else ''
 
-    def api_query(self, method, options=None):
+    def api_query(self, method, tmp_options=None):
         """
         Queries Bittrex with given method and options
 
@@ -45,11 +45,12 @@ class Bittrex(object):
         :return: JSON response from Bittrex
         :rtype : dict
         """
-        if not options:
-            options = {}
-        for key in options.keys():
-            if options[key] is None:
-                options.pop(key)
+        if not tmp_options:
+            tmp_options = {}
+        options = {}
+        for key in tmp_options.keys():
+            if not tmp_options[key] is None:
+                options[key] = tmp_options[key]
         nonce = str(int(time.time() * 1000))
         method_set = 'public'
 
