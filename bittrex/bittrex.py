@@ -21,7 +21,7 @@ BASE_URL = 'https://bittrex.com/api/v1.1/%s/'
 
 MARKET_SET = {'getopenorders', 'cancel', 'sellmarket', 'selllimit', 'buymarket', 'buylimit'}
 
-ACCOUNT_SET = {'getbalances', 'getbalance', 'getdepositaddress', 'withdraw', 'getorderhistory'}
+ACCOUNT_SET = {'getbalances', 'getbalance', 'getdepositaddress', 'withdraw', 'getorderhistory', 'getdeposithistory'}
 
 
 class Bittrex(object):
@@ -32,7 +32,7 @@ class Bittrex(object):
         self.api_key = str(api_key) if api_key is not None else ''
         self.api_secret = str(api_secret) if api_secret is not None else ''
 
-    def api_query(self, method, options=None):
+    def api_query(self, method, tmp_options=None):
         """
         Queries Bittrex with given method and options
 
@@ -45,8 +45,12 @@ class Bittrex(object):
         :return: JSON response from Bittrex
         :rtype : dict
         """
-        if not options:
-            options = {}
+        if not tmp_options:
+            tmp_options = {}
+        options = {}
+        for key in tmp_options.keys():
+            if not tmp_options[key] is None:
+                options[key] = tmp_options[key]
         nonce = str(int(time.time() * 1000))
         method_set = 'public'
 
@@ -127,7 +131,7 @@ class Bittrex(object):
         """
         return self.api_query('getorderbook', {'market': market, 'type': depth_type, 'depth': depth})
 
-    def get_market_history(self, market, count):
+    def get_market_history(self, market):
         """
         Used to retrieve the latest trades that have occurred for a
         specific market.
@@ -137,13 +141,10 @@ class Bittrex(object):
         :param market: String literal for the market (ex: BTC-LTC)
         :type market: str
 
-        :param count: Number between 1-100 for the number of entries to return (default = 20)
-        :type count: int
-
         :return: Market history in JSON
         :rtype : dict
         """
-        return self.api_query('getmarkethistory', {'market': market, 'count': count})
+        return self.api_query('getmarkethistory', {'market': market})
 
     def buy_market(self, market, quantity):
         """
@@ -251,13 +252,13 @@ class Bittrex(object):
         """
         return self.api_query('cancel', {'uuid': uuid})
 
-    def get_open_orders(self, market):
+    def get_open_orders(self, market=None):
         """
         Get all orders that you currently have opened. A specific market can be requested
 
         /market/getopenorders
 
-        :param market: String literal for the market (ie. BTC-LTC)
+        :param market: optional String literal for the market (ie. BTC-LTC)
         :type market: str
 
         :return: Open orders info in JSON
@@ -324,7 +325,7 @@ class Bittrex(object):
         """
         return self.api_query('withdraw', {'currency': currency, 'quantity': quantity, 'address': address})
 
-    def get_order_history(self, market, count):
+    def get_order_history(self, market=None):
         """
         Used to reterieve order trade history of account
 
@@ -333,11 +334,23 @@ class Bittrex(object):
         :param market: optional a string literal for the market (ie. BTC-LTC). If ommited, will return for all markets
         :type market: str
 
-        :param count: optional 	the number of records to return
-        :type count: int
-
         :return: order history in JSON
         :rtype : dict
 
         """
-        return self.api_query('getorderhistory', {'market':market, 'count': count})
+        return self.api_query('getorderhistory', {'market':market})
+
+    def get_deposit_history(self, currency=None):
+        """
+        Used to retrieve your deposit history
+
+        /account/getdeposithistory
+
+        :param currency: optional a string literal for the currency (ie. BTC). If omitted, will return for all currencies
+        :type currency: str
+
+        :return: deposit history in JSON
+        :rtype : dict
+
+        """
+        return self.api_query('getdeposithistory', {'currency':currency})
