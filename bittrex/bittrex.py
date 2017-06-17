@@ -103,6 +103,18 @@ class Bittrex(object):
         """
         return self.api_query('getticker', {'market': market})
 
+    def get_market_summary(self, market):
+        """
+        Used to get the last 24 hour summary of the specified exchange
+
+        :param market: String literal for the market (ex: BTC-LTC)
+        :type market: str
+
+        :return: Market summary for given market in JSON
+        :rtype : dict
+        """
+        return self.api_query('getmarketsummary', {'market': market})
+
     def get_market_summaries(self):
         """
         Used to get the last 24 hour summary of all active exchanges
