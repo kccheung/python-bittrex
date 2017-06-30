@@ -9,8 +9,8 @@ try:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
 except ImportError:
-    from urllib.parse import urlencode
-    from urllib.parse import urljoin
+    from urllib import urlencode
+    from urlparse import urljoin
 import requests
 
 BUY_ORDERBOOK = 'buy'
