@@ -5,6 +5,7 @@
 import time
 import hmac
 import hashlib
+
 try:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
@@ -21,13 +22,14 @@ BASE_URL = 'https://bittrex.com/api/v1.1/%s/'
 
 MARKET_SET = {'getopenorders', 'cancel', 'sellmarket', 'selllimit', 'buymarket', 'buylimit'}
 
-ACCOUNT_SET = {'getbalances', 'getbalance', 'getdepositaddress', 'withdraw', 'getorderhistory', 'getdeposithistory'}
+ACCOUNT_SET = {'getbalances', 'getbalance', 'getdepositaddress', 'withdraw', 'getorderhistory', 'getdeposithistory', 'getorder'}
 
 
 class Bittrex(object):
     """
     Used for requesting Bittrex with API key and API secret
     """
+
     def __init__(self, api_key, api_secret):
         self.api_key = str(api_key) if api_key is not None else ''
         self.api_secret = str(api_secret) if api_secret is not None else ''
@@ -350,7 +352,7 @@ class Bittrex(object):
         :rtype : dict
 
         """
-        return self.api_query('getorderhistory', {'market':market})
+        return self.api_query('getorderhistory', {'market': market})
 
     def get_deposit_history(self, currency=None):
         """
@@ -365,4 +367,19 @@ class Bittrex(object):
         :rtype : dict
 
         """
-        return self.api_query('getdeposithistory', {'currency':currency})
+        return self.api_query('getdeposithistory', {'currency': currency})
+
+    def get_order(self, uuid):
+        """
+        Used to retrieve order information
+
+        /account/getorder
+
+        :uuid: id of the order
+        :type market: str
+
+        :return: order history in JSON
+        :rtype : dict
+
+        """
+        return self.api_query('getorder', {'uuid': uuid})
