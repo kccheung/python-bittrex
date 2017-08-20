@@ -5,6 +5,9 @@
 import time
 import hmac
 import hashlib
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 try:
     from urllib.parse import urlencode
@@ -70,7 +73,8 @@ class Bittrex(object):
 
         return requests.get(
             request_url,
-            headers={"apisign": hmac.new(self.api_secret.encode(), request_url.encode(), hashlib.sha512).hexdigest()}
+            headers={"apisign": hmac.new(self.api_secret.encode(), request_url.encode(), hashlib.sha512).hexdigest()},
+            verify=False,
         ).json()
 
     def get_markets(self):
