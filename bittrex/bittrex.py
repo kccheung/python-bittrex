@@ -5,9 +5,6 @@
 import time
 import hmac
 import hashlib
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 try:
     from urllib.parse import urlencode
@@ -15,7 +12,11 @@ try:
 except ImportError:
     from urllib import urlencode
     from urlparse import urljoin
+
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 BUY_ORDERBOOK = 'buy'
 SELL_ORDERBOOK = 'sell'
